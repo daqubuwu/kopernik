@@ -1,0 +1,33 @@
+{% extends 'design_studio/base.html' %}
+
+{% block content %}
+<section class="join-hero">
+    <div class="container">
+        <h1>Присоединиться к команде</h1>
+        <p>Мы всегда рады талантливым дизайнерам в нашу команду</p>
+    </div>
+</section>
+
+<section class="join-form">
+    <div class="container">
+        <div class="form-container">
+            <h2>Заполните заявку</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </div>
+        <div class="join-info">
+            <h3>Почему стоит работать с нами?</h3>
+            <ul>
+                <li><i class="fas fa-check"></i> Интересные проекты</li>
+                <li><i class="fas fa-check"></i> Гибкий график работы</li>
+                <li><i class="fas fa-check"></i> Конкурентная зарплата</li>
+                <li><i class="fas fa-check"></i> Профессиональный рост</li>
+                <li><i class="fas fa-check"></i> Дружная команда</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

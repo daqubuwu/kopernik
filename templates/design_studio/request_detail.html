@@ -1,0 +1,69 @@
+{% extends 'design_studio/base.html' %}
+
+{% block content %}
+<section class="request-detail">
+    <div class="container">
+        <a href="{% url 'applications' %}" class="btn btn-back">← Назад к заявкам</a>
+        
+        <div class="request-card detailed">
+            <h2>Детали заявки</h2>
+            
+            <div class="request-info">
+                <div class="info-row">
+                    <span class="info-label">Тип проекта:</span>
+                    <span class="info-value">{{ request.project_type }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Статус:</span>
+                    <span class="info-value status-{{ request.status }}">
+                        {{ request.get_status_display }}
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Дата создания:</span>
+                    <span class="info-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Бюджет:</span>
+                    <span class="info-value">{{ request.budget }} руб.</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Контактный email:</span>
+                    <span class="info-value">{{ request.email }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Телефон:</span>
+                    <span class="info-value">{{ request.phone }}</span>
+                </div>
+                
+                <div class="info-row full-width">
+                    <span class="info-label">Описание проекта:</span>
+                    <p class="info-value">{{ request.description }}</p>
+                </div>
+            </div>
+            
+            {% if user.is_superuser %}
+            <div class="admin-actions">
+                <h3>Действия администратора</h3>
+                <form method="post" class="status-form">
+                    {% csrf_token %}
+                    <select name="status" class="status-select">
+                        {% for value, label in request.STATUS_CHOICES %}
+                        <option value="{{ value }}" {% if value == request.status %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Обновить статус</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

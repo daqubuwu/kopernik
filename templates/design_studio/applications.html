@@ -1,0 +1,80 @@
+{% extends 'design_studio/base.html' %}
+
+{% block content %}
+<section class="applications-section">
+    <div class="container">
+        <h1>Мои заявки</h1>
+        
+        {% if user.is_superuser %}
+        <div class="admin-notice">
+            <p>Вы вошли как администратор. Видны все заявки.</p>
+        </div>
+        {% endif %}
+        
+        <div class="applications-tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'client')">Заявки на дизайн</button>
+            <button class="tab-btn" onclick="openTab(event, 'designer')">Заявки дизайнеров</button>
+        </div>
+
+        <div id="client-tab" class="tab-content" style="display: block;">
+            <h2>Заявки на дизайн</h2>
+            {% if client_requests %}
+            <div class="requests-grid">
+                {% for request in client_requests %}
+                <div class="request-card">
+                    <h3>{{ request.project_type }}</h3>
+                    <p><strong>Статус:</strong> <span class="status-{{ request.status }}">{{ request.get_status_display }}</span></p>
+                    <p><strong>Дата:</strong> {{ request.created_at|date:"d.m.Y" }}</p>
+                    <p><strong>Бюджет:</strong> {{ request.budget }} руб.</p>
+                    <a href="{% url 'request_detail' request.id %}" class="btn btn-small">Подробнее</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>У вас нет заявок на дизайн.</p>
+            {% endif %}
+        </div>
+
+        <div id="designer-tab" class="tab-content" style="display: none;">
+            <h2>Заявки дизайнеров</h2>
+            {% if designer_applications %}
+            <div class="requests-grid">
+                {% for application in designer_applications %}
+                <div class="request-card">
+                    <h3>{{ application.name }}</h3>
+                    <p><strong>Статус:</strong> <span class="status-{{ application.status }}">{{ application.get_status_display }}</span></p>
+                    <p><strong>Дата:</strong> {{ application.created_at|date:"d.m.Y" }}</p>
+                    <p><strong>Специализация:</strong> {{ application.specialization }}</p>
+                    <a href="{{ application.portfolio_link }}" target="_blank" class="btn btn-small">Портфолио</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>У вас нет заявок дизайнеров.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openTab(event, tabName) {
+    // Скрыть все табы
+    const tabContents = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+    }
+
+    // Убрать активный класс у всех кнопок
+    const tabButtons = document.getElementsByClassName("tab-btn");
+    for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
+    }
+
+    // Показать выбранный таб и сделать кнопку активной
+    document.getElementById(tabName + "-tab").style.display = "block";
+    event.currentTarget.classList.add("active");
+}
+</script>
+{% endblock %}

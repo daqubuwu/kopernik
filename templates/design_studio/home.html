@@ -1,0 +1,87 @@
+{% extends 'design_studio/base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Создаем дизайн, который работает</h1>
+        <p>Профессиональные дизайн-решения для вашего бизнеса. От концепции до реализации.</p>
+        <a href="{% url 'order' %}" class="btn btn-primary">Заказать проект</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Наши преимущества</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Инновации</h3>
+                <p>Используем современные подходы и технологии в дизайне.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-award"></i>
+                <h3>Опыт</h3>
+                <p>{{ company_info.years_of_experience }}+ лет успешной работы в сфере дизайна.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-users"></i>
+                <h3>Команда</h3>
+                <p>Профессиональные дизайнеры с узкой специализацией.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-project-diagram"></i>
+                <h3>Проекты</h3>
+                <p>{{ company_info.projects_completed }}+ успешно реализованных проектов.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container">
+        <div class="stat-item">
+            <h3>{{ company_info.years_of_experience }}+</h3>
+            <p>Лет опыта</p>
+        </div>
+        <div class="stat-item">
+            <h3>{{ company_info.projects_completed }}+</h3>
+            <p>Проектов</p>
+        </div>
+        <div class="stat-item">
+            <h3>{{ company_info.happy_clients }}+</h3>
+            <p>Довольных клиентов</p>
+        </div>
+    </div>
+</section>
+
+<section class="reviews">
+    <div class="container">
+        <h2>Отзывы наших клиентов</h2>
+        <div class="reviews-grid">
+            {% for review in reviews %}
+            <div class="review-item">
+                <div class="rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p class="review-text">"{{ review.text }}"</p>
+                <p class="review-author">- {{ review.author }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Готовы начать проект?</h2>
+        <p>Оставьте заявку, и мы свяжемся с вами в ближайшее время.</p>
+        <a href="{% url 'order' %}" class="btn btn-primary">Оставить заявку</a>
+    </div>
+</section>
+{% endblock %}

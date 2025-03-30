@@ -1,0 +1,37 @@
+{% extends 'design_studio/base.html' %}
+
+{% block content %}
+<section class="order-hero">
+    <div class="container">
+        <h1>Оставить заявку</h1>
+        <p>Заполните форму, и мы свяжемся с вами для обсуждения деталей проекта</p>
+    </div>
+</section>
+
+<section class="order-form">
+    <div class="container">
+        <div class="form-container">
+            <h2>Форма заявки</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </div>
+        <div class="order-info">
+            <h3>Что будет дальше?</h3>
+            <ol>
+                <li>Мы свяжемся с вами в течение 1 рабочего дня</li>
+                <li>Обсудим детали проекта и ваши пожелания</li>
+                <li>Подготовим коммерческое предложение</li>
+                <li>Начнем работу после согласования всех деталей</li>
+            </ol>
+            <div class="contacts">
+                <h3>Контакты</h3>
+                <p><i class="fas fa-phone"></i> +7 (123) 456-78-90</p>
+                <p><i class="fas fa-envelope"></i> info@kopernik.design</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
