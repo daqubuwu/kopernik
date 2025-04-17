@@ -84,3 +84,11 @@ LOGIN_REDIRECT_URL = 'home'  # Куда перенаправлять после 
 LOGOUT_REDIRECT_URL = 'home'  # Куда перенаправлять после выхода
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465  # Для SSL
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'daqubeen@yandex.ru'
+EMAIL_HOST_PASSWORD = 'mdnocnnphfedgtes'
+DEFAULT_FROM_EMAIL = 'daqubeen@yandex.ru'

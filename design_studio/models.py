@@ -91,14 +91,45 @@ class CompanyInfo(models.Model):
 
 
 class WorkStage(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Заголовок этапа')
-    description = models.TextField(verbose_name='Описание этапа')
-    order = models.IntegerField(verbose_name='Порядок')
+    title = models.CharField(max_length=200, verbose_name="Название этапа")
+    description = models.TextField(verbose_name="Описание")
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Этап работы'
+        verbose_name_plural = 'Этапы работы'
 
     def __str__(self):
         return self.title
 
+
+class Feature(models.Model):
+    ICON_CHOICES = [
+        ('fa-lightbulb', 'Лампочка'),
+        ('fa-award', 'Награда'),
+        ('fa-users', 'Люди'),
+        ('fa-project-diagram', 'Проект'),
+        ('fa-palette', 'Палитра'),
+        ('fa-clock', 'Часы'),
+        # Добавьте другие иконки по необходимости
+    ]
+
+    title = models.CharField(max_length=100, verbose_name="Заголовок")
+    description = models.TextField(verbose_name="Описание")
+    icon = models.CharField(
+        max_length=50,
+        choices=ICON_CHOICES,
+        default='fa-lightbulb',
+        verbose_name="Иконка"
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активно")
+
     class Meta:
-        verbose_name = 'Этап работы'
-        verbose_name_plural = 'Этапы работы'
         ordering = ['order']
+        verbose_name = "Фича"
+        verbose_name_plural = "Фичи"
+
+    def __str__(self):
+        return self.title

@@ -5,18 +5,74 @@
     <div class="container">
         <h1>Как мы работаем</h1>
         <p>Прозрачный процесс создания дизайна от идеи до реализации</p>
+
+        {% if user.is_superuser %}
+        <div class="admin-controls">
+            <button class="btn btn-small" onclick="toggleAddForm()">+ Добавить этап</button>
+        </div>
+        {% endif %}
     </div>
 </section>
 
 <section class="stages">
     <div class="container">
+        <!-- Форма добавления -->
+        {% if user.is_superuser %}
+        <div id="add-stage-form" style="display: none;">
+            <form method="POST" action="{% url 'add_stage' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Название этапа" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="description" placeholder="Описание этапа" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить</button>
+                <button type="button" class="btn btn-secondary" onclick="toggleAddForm()">Отмена</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Список этапов -->
         <div class="timeline">
             {% for stage in stages %}
             <div class="timeline-item">
                 <div class="timeline-number">0{{ forloop.counter }}</div>
                 <div class="timeline-content">
-                    <h3>{{ stage.title }}</h3>
-                    <p>{{ stage.description }}</p>
+                    <!-- Режим просмотра -->
+                    <div class="view-mode">
+                        <h3>{{ stage.title }}</h3>
+                        <p>{{ stage.description }}</p>
+                    </div>
+
+                    <!-- Режим редактирования -->
+                    {% if user.is_superuser %}
+                    <div class="edit-mode" style="display: none;">
+                        <form method="POST" action="{% url 'update_stage' stage.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="title" value="{{ stage.title }}" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="description" required>{{ stage.description }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-small btn-save">Сохранить</button>
+                            <button type="button" class="btn btn-small btn-cancel">Отмена</button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    <!-- Кнопки действий -->
+                    {% if user.is_superuser %}
+                    <div class="stage-actions">
+                        <button class="btn-edit">✎</button>
+                        <form method="POST" action="{% url 'delete_stage' stage.id %}" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete"
+                                    onclick="return confirm('Удалить этот этап?')">×</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -24,11 +80,135 @@
     </div>
 </section>
 
-<section class="workflow-cta">
-    <div class="container">
-        <h2>Готовы начать сотрудничество?</h2>
-        <p>Оставьте заявку, и мы свяжемся с вами для обсуждения деталей проекта.</p>
-        <a href="{% url 'order' %}" class="btn btn-primary">Оставить заявку</a>
-    </div>
-</section>
+<style>
+/* Основные стили */
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.timeline-number {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Стили для кнопок */
+.stage-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit, .btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.btn-edit:hover {
+    color: #4CAF50;
+}
+
+.btn-delete:hover {
+    color: #f44336;
+}
+
+/* Стили форм редактирования */
+.edit-mode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 20px;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.edit-mode .form-group {
+    margin-bottom: 15px;
+}
+
+.edit-mode input,
+.edit-mode textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.edit-mode textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.btn-save {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    margin-left: 10px;
+}
+
+/* Форма добавления */
+#add-stage-form {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+</style>
+
+<script>
+// Переключение формы добавления
+function toggleAddForm() {
+    const form = document.getElementById('add-stage-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+// Переключение режима редактирования
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const timelineItem = this.closest('.timeline-item');
+        timelineItem.querySelector('.view-mode').style.display = 'none';
+        timelineItem.querySelector('.edit-mode').style.display = 'block';
+    });
+});
+
+// Отмена редактирования
+document.querySelectorAll('.btn-cancel').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const timelineItem = this.closest('.timeline-item');
+        timelineItem.querySelector('.view-mode').style.display = 'block';
+        timelineItem.querySelector('.edit-mode').style.display = 'none';
+    });
+});
+</script>
 {% endblock %}

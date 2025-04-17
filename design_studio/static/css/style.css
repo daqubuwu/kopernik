@@ -160,7 +160,7 @@ nav ul li a:hover::after {
 }
 
 .order-btn {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: var(--white);
     padding: 10px 20px;
     border-radius: var(--border-radius);
@@ -170,7 +170,7 @@ nav ul li a:hover::after {
 }
 
 .order-btn:hover {
-    background-color: #3f3fd8;
+    background-color: #2aa8c6;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -963,7 +963,6 @@ form textarea {
 }
 
 .admin-notice {
-    background-color: #f8f9fa;
     padding: 20px;
     border-left: 4px solid var(--primary-color);
     margin-bottom: 30px;
@@ -1359,3 +1358,151 @@ footer::before {
         width: 100%;
     }
 }
+
+
+.notification-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.notification {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  color: white;
+  position: relative;
+  animation: slideIn 0.5s forwards;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+}
+
+.notification.error {
+  background-color: #F44336;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+
+.admin-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.status-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.status-select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-width: 200px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    min-width: 300px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: white;
+    position: relative;
+    animation: slideIn 0.5s forwards;
+}
+
+.alert-success {
+    background-color: #4CAF50;
+}
+
+.alert-error {
+    background-color: #f44336;
+}
+
+.close {
+    color: white;
+    border: transparent;
+    background-color: transparent;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.feature-item {
+    position: relative;
+}
+
+.admin-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit, .btn-delete {
+    padding: 3px 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255,255,255,0.9);
+    border-radius: 3px;
+}
+
+.btn-delete {
+    color: #dc3545;
+}
+
+.btn-delete:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.admin-panel {
+    margin-top: 30px;
+    text-align: center;
+}
+

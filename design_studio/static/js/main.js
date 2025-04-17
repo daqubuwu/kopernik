@@ -74,3 +74,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+// Автоматическое закрытие уведомления через 5 секунд
+document.addEventListener('DOMContentLoaded', function() {
+  const closeButtons = document.querySelectorAll('.close-btn');
+
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.parentElement.style.display = 'none';
+    });
+  });
+
+  // Авто-закрытие через 5 секунд
+  setTimeout(() => {
+    const notifications = document.querySelectorAll('.notification');
+    notifications.forEach(notif => {
+      notif.style.display = 'none';
+    });
+  }, 5000);
+});

@@ -18,6 +18,25 @@
 
         <div id="client-tab" class="tab-content" style="display: block;">
             <h2>Заявки на дизайн</h2>
+
+            <!-- Фильтр для заявок на дизайн -->
+            <div class="filter-container">
+                <form method="get" id="client-filter">
+                    <div class="filter-group">
+                        <label for="client_status">Статус:</label>
+                        <select name="client_status" id="client_status" onchange="this.form.submit()">
+                            <option value="">Все</option>
+                            {% for value, label in client_status_choices %}
+                            <option value="{{ value }}" {% if selected_client_status == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-small" onclick="resetFilter('client')">Сбросить</button>
+                </form>
+            </div>
+
             {% if client_requests %}
             <div class="requests-grid">
                 {% for request in client_requests %}
@@ -31,12 +50,31 @@
                 {% endfor %}
             </div>
             {% else %}
-            <p>У вас нет заявок на дизайн.</p>
+            <p>Заявок с выбранным фильтром не найдено</p>
             {% endif %}
         </div>
 
         <div id="designer-tab" class="tab-content" style="display: none;">
             <h2>Заявки дизайнеров</h2>
+
+            <!-- Фильтр для заявок дизайнеров -->
+            <div class="filter-container">
+                <form method="get" id="designer-filter">
+                    <div class="filter-group">
+                        <label for="designer_status">Статус:</label>
+                        <select name="designer_status" id="designer_status" onchange="this.form.submit()">
+                            <option value="">Все</option>
+                            {% for value, label in designer_status_choices %}
+                            <option value="{{ value }}" {% if selected_designer_status == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-small" onclick="resetFilter('designer')">Сбросить</button>
+                </form>
+            </div>
+
             {% if designer_applications %}
             <div class="requests-grid">
                 {% for application in designer_applications %}
@@ -45,12 +83,16 @@
                     <p><strong>Статус:</strong> <span class="status-{{ application.status }}">{{ application.get_status_display }}</span></p>
                     <p><strong>Дата:</strong> {{ application.created_at|date:"d.m.Y" }}</p>
                     <p><strong>Специализация:</strong> {{ application.specialization }}</p>
-                    <a href="{{ application.portfolio_link }}" target="_blank" class="btn btn-small">Портфолио</a>
+
+                    <div class="card-buttons">
+                        <a href="{{ application.portfolio_link }}" target="_blank" class="btn btn-small">Портфолио</a>
+                        <a href="{% url 'designer_application_detail' application.id %}" class="btn btn-small">Подробнее</a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
             {% else %}
-            <p>У вас нет заявок дизайнеров.</p>
+            <p>Заявок с выбранным фильтром не найдено</p>
             {% endif %}
         </div>
     </div>
@@ -60,6 +102,11 @@
 {% block scripts %}
 <script>
 function openTab(event, tabName) {
+    // Сохраняем текущие фильтры в URL
+    const params = new URLSearchParams(window.location.search);
+    params.set('active_tab', tabName);
+    window.history.replaceState({}, '', `${location.pathname}?${params}`);
+
     // Скрыть все табы
     const tabContents = document.getElementsByClassName("tab-content");
     for (let i = 0; i < tabContents.length; i++) {
@@ -76,5 +123,48 @@ function openTab(event, tabName) {
     document.getElementById(tabName + "-tab").style.display = "block";
     event.currentTarget.classList.add("active");
 }
+
+function resetFilter(type) {
+    if(type === 'client') {
+        document.getElementById('client_status').value = '';
+    } else {
+        document.getElementById('designer_status').value = '';
+    }
+    document.getElementById(`${type}-filter`).submit();
+}
+
+// Восстановление активной вкладки при загрузке
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('active_tab') || 'client';
+    document.getElementById(activeTab + '-tab').style.display = 'block';
+    document.querySelector(`[onclick="openTab(event, '${activeTab}')"]`).classList.add('active');
+}
 </script>
+
+<style>
+.filter-container {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    font-weight: 500;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-width: 200px;
+}
+</style>
 {% endblock %}

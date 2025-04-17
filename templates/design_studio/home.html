@@ -13,27 +13,40 @@
     <div class="container">
         <h2>Наши преимущества</h2>
         <div class="features-grid">
+            {% for feature in features %}
             <div class="feature-item">
-                <i class="fas fa-lightbulb"></i>
-                <h3>Инновации</h3>
-                <p>Используем современные подходы и технологии в дизайне.</p>
+                <i class="fas {{ feature.icon }}"></i>
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.description }}</p>
+
+                {% if user.is_superuser %}
+                <div class="admin-actions">
+                    <a href="{% url 'admin:design_studio_feature_change' feature.id %}"
+                       class="btn btn-edit"
+                       target="_blank">
+                        ✏️
+                    </a>
+                    <form method="post"
+                          action="{% url 'admin:design_studio_feature_delete' feature.id %}"
+                          class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-delete">🗑️</button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
-            <div class="feature-item">
-                <i class="fas fa-award"></i>
-                <h3>Опыт</h3>
-                <p>{{ company_info.years_of_experience }}+ лет успешной работы в сфере дизайна.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-users"></i>
-                <h3>Команда</h3>
-                <p>Профессиональные дизайнеры с узкой специализацией.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-project-diagram"></i>
-                <h3>Проекты</h3>
-                <p>{{ company_info.projects_completed }}+ успешно реализованных проектов.</p>
-            </div>
+            {% endfor %}
         </div>
+
+        {% if user.is_superuser %}
+        <div class="admin-panel">
+            <a href="{% url 'admin:design_studio_feature_add' %}"
+               class="btn btn-success"
+               target="_blank">
+                ➕ Добавить новый блок
+            </a>
+        </div>
+        {% endif %}
     </div>
 </section>
 
