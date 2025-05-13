@@ -14,21 +14,16 @@
         <h2>Наши преимущества</h2>
         <div class="features-grid">
             {% for feature in features %}
-            <div class="feature-item">
+            <div class="feature-item" data-id="{{ feature.id }}">
                 <i class="fas {{ feature.icon }}"></i>
                 <h3>{{ feature.title }}</h3>
                 <p>{{ feature.description }}</p>
 
                 {% if user.is_superuser %}
                 <div class="admin-actions">
-                    <a href="{% url 'admin:design_studio_feature_change' feature.id %}"
-                       class="btn btn-edit"
-                       target="_blank">
-                        ✏️
-                    </a>
-                    <form method="post"
-                          action="{% url 'admin:design_studio_feature_delete' feature.id %}"
-                          class="delete-form">
+                    <button class="btn btn-edit" onclick="openEditModal({{ feature.id }}, '{{ feature.title|escapejs }}', '{{ feature.description|escapejs }}', '{{ feature.icon|escapejs }}')">✏️</button>
+
+                    <form method="post" action="{% url 'delete_feature' feature.id %}" style="display:inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-delete">🗑️</button>
                     </form>
@@ -40,11 +35,7 @@
 
         {% if user.is_superuser %}
         <div class="admin-panel">
-            <a href="{% url 'admin:design_studio_feature_add' %}"
-               class="btn btn-success"
-               target="_blank">
-                ➕ Добавить новый блок
-            </a>
+            <button class="btn btn-success" onclick="openAddModal()">➕ Добавить новый блок</button>
         </div>
         {% endif %}
     </div>
@@ -97,4 +88,135 @@
         <a href="{% url 'order' %}" class="btn btn-primary">Оставить заявку</a>
     </div>
 </section>
+
+<!-- Модальное окно редактирования -->
+<div class="modal" id="editFeatureModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Редактировать блок</h2>
+        <form id="editFeatureForm" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="edit-id">
+            <p><label>Заголовок:</label><input type="text" name="title" id="edit-title"></p>
+            <p><label>Описание:</label><textarea name="description" id="edit-description"></textarea></p>
+            <p>
+                <label>Иконка:</label>
+                <div class="icon-picker">
+                    <input type="hidden" name="icon" id="edit-icon">
+                    <div class="icon-list">
+                    {% for icon in icons %}
+                        <span class="icon-option" onclick="selectIcon('add-icon', '{{ icon }}')">
+                            <i class="fas {{ icon }}"></i>
+                        </span>
+                    {% endfor %}
+
+                    </div>
+                </div>
+            </p>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно добавления -->
+<div class="modal" id="addFeatureModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModal()">&times;</span>
+        <h2>Добавить блок</h2>
+        <form method="post" action="{% url 'add_feature' %}">
+            {% csrf_token %}
+            <p><label>Заголовок:</label><input type="text" name="title"></p>
+            <p><label>Описание:</label><textarea name="description"></textarea></p>
+            <p>
+                <label>Иконка:</label>
+                <div class="icon-picker">
+                    <input type="hidden" name="icon" id="add-icon">
+                    <div class="icon-list">
+                        {% for icon in icons %}
+                            <span class="icon-option" onclick="selectIcon('add-icon', '{{ icon }}')">
+                                <i class="fas {{ icon }}"></i>
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </p>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openEditModal(id, title, description, icon) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-description').value = description;
+    document.getElementById('edit-icon').value = icon;
+    document.getElementById('editFeatureForm').action = `/feature/edit/${id}/`;
+    document.getElementById('editFeatureModal').style.display = 'block';
+}
+function closeEditModal() {
+    document.getElementById('editFeatureModal').style.display = 'none';
+}
+function openAddModal() {
+    document.getElementById('addFeatureModal').style.display = 'block';
+}
+function closeAddModal() {
+    document.getElementById('addFeatureModal').style.display = 'none';
+}
+function selectIcon(inputId, icon) {
+    document.getElementById(inputId).value = icon;
+    // Визуальное подтверждение выбора иконки
+    document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+    event.target.closest('.icon-option').classList.add('selected');
+}
+
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+}
+</script>
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+}
+.icon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+.icon-option {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.icon-option:hover, .icon-option.selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+</style>
 {% endblock %}

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from .views import add_feature, update_feature, delete_feature
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,6 +19,12 @@ urlpatterns = [
     path('workflow/delete/<int:pk>/', views.delete_stage, name='delete_stage'),
     path('workflow/add/', views.add_stage, name='add_stage'),
     path('workflow/update/<int:pk>/', views.update_stage, name='update_stage'),
+    path('workflow/edit/<int:pk>/', views.edit_stage, name='edit_stage'),
+    path('feature/add/', add_feature, name='add_feature'),
+    path('feature/<int:pk>/edit/', update_feature, name='update_feature'),
+
+    path('feature/<int:pk>/delete/', delete_feature, name='delete_feature'),
+
 
 
 

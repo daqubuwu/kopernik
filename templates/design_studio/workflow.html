@@ -1,214 +1,216 @@
+
 {% extends 'design_studio/base.html' %}
 
 {% block content %}
 <section class="workflow-hero">
-    <div class="container">
-        <h1>Как мы работаем</h1>
-        <p>Прозрачный процесс создания дизайна от идеи до реализации</p>
-
+<div class="container">
+<h1>Как мы работаем</h1>
+<p>Прозрачный процесс создания дизайна от идеи до реализации</p>
         {% if user.is_superuser %}
         <div class="admin-controls">
-            <button class="btn btn-small" onclick="toggleAddForm()">+ Добавить этап</button>
-        </div>
+<button class="btn btn-small" onclick="openAddModal()">+ Добавить этап</button>
+</div>
         {% endif %}
     </div>
 </section>
-
 <section class="stages">
-    <div class="container">
-        <!-- Форма добавления -->
+<div class="container">
         {% if user.is_superuser %}
-        <div id="add-stage-form" style="display: none;">
-            <form method="POST" action="{% url 'add_stage' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <input type="text" name="title" placeholder="Название этапа" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="description" placeholder="Описание этапа" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Добавить</button>
-                <button type="button" class="btn btn-secondary" onclick="toggleAddForm()">Отмена</button>
-            </form>
-        </div>
+
         {% endif %}
 
-        <!-- Список этапов -->
-        <div class="timeline">
+        <div class="stages-grid">
             {% for stage in stages %}
-            <div class="timeline-item">
-                <div class="timeline-number">0{{ forloop.counter }}</div>
-                <div class="timeline-content">
-                    <!-- Режим просмотра -->
-                    <div class="view-mode">
-                        <h3>{{ stage.title }}</h3>
-                        <p>{{ stage.description }}</p>
-                    </div>
-
-                    <!-- Режим редактирования -->
-                    {% if user.is_superuser %}
-                    <div class="edit-mode" style="display: none;">
-                        <form method="POST" action="{% url 'update_stage' stage.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <input type="text" name="title" value="{{ stage.title }}" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="description" required>{{ stage.description }}</textarea>
-                            </div>
-                            <button type="submit" class="btn btn-small btn-save">Сохранить</button>
-                            <button type="button" class="btn btn-small btn-cancel">Отмена</button>
-                        </form>
-                    </div>
-                    {% endif %}
-
-                    <!-- Кнопки действий -->
-                    {% if user.is_superuser %}
-                    <div class="stage-actions">
-                        <button class="btn-edit">✎</button>
-                        <form method="POST" action="{% url 'delete_stage' stage.id %}" class="delete-form">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-delete"
-                                    onclick="return confirm('Удалить этот этап?')">×</button>
-                        </form>
-                    </div>
-                    {% endif %}
-                </div>
+            <div class="stage-card" id="stage-{{ stage.id }}">
+<div class="stage-number">Этап {{ forloop.counter }}</div>
+<h3>{{ stage.title }}</h3>
+<p>{{ stage.description }}</p>
+                {% if user.is_superuser %}
+                <div class="admin-buttons">
+<button class="btn btn-small btn-edit" onclick="openEditModal({{ stage.id }}, '{{ stage.title|escapejs }}', '{{ stage.description|escapejs }}')">Редактировать</button>
+<form action="{% url 'delete_stage' stage.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-small btn-danger" type="submit">Удалить</button>
+</form>
+</div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
-    </div>
+</div>
 </section>
-
+<!-- Модалка добавления этапа -->
+<div class="modal" id="addStageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+<div class="modal-content" style="max-width: 600px; width: 100%; background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-md);">
+<h2>Добавить этап</h2>
+<form action="/workflow/add/" method="POST">
+<input name="csrfmiddlewaretoken" type="hidden" value="{{ csrf_token }}"/>
+<input name="title" placeholder="Название этапа" required="" type="text"/>
+<textarea name="description" placeholder="Описание этапа" required="" rows="4"></textarea>
+<label>Вставить после:</label>
+<select name="insert_after" required="">
+<option value="0">В начало</option>
+                {% for stage in stages %}
+                    <option value="{{ stage.id }}">{{ forloop.counter }} — {{ stage.title }}</option>
+                {% endfor %}
+            </select>
+<div class="form-actions">
+<button class="btn btn-primary" type="submit">Добавить</button>
+<button class="btn btn-secondary" onclick="closeAddModal()" type="button">Отмена</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Модальное окно -->
+<div class="modal" id="editModal">
+<div class="modal-content" style="max-width: 600px; width: 100%; background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-md);">
+<h2>Редактировать этап</h2>
+<form id="editForm">
+            {% csrf_token %}
+            <input id="modal-stage-id" name="stage_id" type="hidden"/>
+<input id="modal-title" name="title" placeholder="Название" required="" type="text"/>
+<textarea id="modal-description" name="description" placeholder="Описание" required="" rows="4"></textarea>
+<div class="form-actions">
+<button class="btn btn-primary" type="submit">Сохранить</button>
+<button class="btn btn-secondary" onclick="closeEditModal()" type="button">Отмена</button>
+</div>
+</form>
+</div>
+</div>
 <style>
-/* Основные стили */
-.timeline-item {
+.stages-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.stage-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    border-left: 6px solid var(--primary-color);
     position: relative;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 8px;
-    transition: all 0.3s;
 }
-
-.timeline-number {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
+.stage-card:hover {
+    border-left-color: var(--secondary-color);
+    transform: translateY(-3px);
 }
-
-/* Стили для кнопок */
-.stage-actions {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.stage-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.stage-number::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+.stage-card h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--dark-bg);
+}
+.stage-card p {
+    font-size: 1.1rem;
+    color: var(--light-text);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+.admin-buttons {
+    margin-top: auto;
     display: flex;
     gap: 10px;
 }
 
-.btn-edit, .btn-delete {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 5px;
+
+.stage-card {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.btn-edit:hover {
-    color: #4CAF50;
+
+@media (max-width: 768px) {
+    .stage-card {
+        width: 90%;
+    }
 }
 
-.btn-delete:hover {
-    color: #f44336;
-}
 
-/* Стили форм редактирования */
-.edit-mode {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: white;
-    padding: 20px;
-    z-index: 2;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+#editModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
-
-.edit-mode .form-group {
-    margin-bottom: 15px;
-}
-
-.edit-mode input,
-.edit-mode textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.edit-mode textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-.btn-save {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    margin-left: 10px;
-}
-
-/* Форма добавления */
-#add-stage-form {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+#editModal .modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 </style>
-
 <script>
-// Переключение формы добавления
-function toggleAddForm() {
-    const form = document.getElementById('add-stage-form');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+function openAddModal() {
+    document.getElementById('addStageModal').style.display = 'flex';
 }
-
-// Переключение режима редактирования
-document.querySelectorAll('.btn-edit').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const timelineItem = this.closest('.timeline-item');
-        timelineItem.querySelector('.view-mode').style.display = 'none';
-        timelineItem.querySelector('.edit-mode').style.display = 'block';
-    });
-});
-
-// Отмена редактирования
-document.querySelectorAll('.btn-cancel').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const timelineItem = this.closest('.timeline-item');
-        timelineItem.querySelector('.view-mode').style.display = 'block';
-        timelineItem.querySelector('.edit-mode').style.display = 'none';
-    });
+function closeAddModal() {
+    document.getElementById('addStageModal').style.display = 'none';
+}
+function openEditModal(id, title, description) {
+    document.getElementById('modal-stage-id').value = id;
+    document.getElementById('modal-title').value = title;
+    document.getElementById('modal-description').value = description;
+    document.getElementById('editModal').style.display = 'flex';
+}
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('editForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('modal-stage-id').value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            fetch(`/workflow/edit/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'title': document.getElementById('modal-title').value,
+                    'description': document.getElementById('modal-description').value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Ошибка при сохранении');
+                }
+            });
+        });
+    }
 });
 </script>
 {% endblock %}

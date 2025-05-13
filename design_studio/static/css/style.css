@@ -1,25 +1,22 @@
-/* Base Styles */
 :root {
-    --primary-color: #3ac0de;
-    --secondary-color: #5150e8;
-    --background-color: #f3fdff;
-    --text-color: #333;
-    --light-text: #777;
-    --white: #fff;
-    --dark-bg: #2c3e50;
+    --primary-color: #177fff;
+    --secondary-color: #3c93ff;
+    --background-color: #f9fbff;
+    --text-color: #1c1c1c;
+    --light-text: #5f5f5f;
+    --white: #ffffff;
+    --dark-bg: #0a1d37;
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --border-radius: 8px;
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--background-color);
@@ -28,21 +25,17 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 a {
     text-decoration: none;
     color: inherit;
     transition: var(--transition);
 }
-
 .container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
 }
-
-/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -57,7 +50,6 @@ a {
     position: relative;
     overflow: hidden;
 }
-
 .btn::after {
     content: '';
     position: absolute;
@@ -71,11 +63,9 @@ a {
     transform: scale(1, 1) translate(-50%);
     transform-origin: 50% 50%;
 }
-
 .btn:focus:not(:active)::after {
     animation: ripple 0.6s ease-out;
 }
-
 @keyframes ripple {
     0% {
         transform: scale(0, 0);
@@ -86,25 +76,23 @@ a {
         opacity: 0;
     }
 }
-
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white);
     box-shadow: var(--shadow-sm);
 }
-
 .btn-primary:hover {
-    background-color: #2aa8c6;
+    background-color: #0f6fe0;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
-
 .btn-small {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    background-color: #177fff;
+    color: white;
 }
-
-/* Header */
+.btn-small:hover {
+    background-color: #116de6;
+}
 header {
     background-color: var(--white);
     box-shadow: var(--shadow-md);
@@ -115,14 +103,12 @@ header {
     backdrop-filter: blur(5px);
     background-color: rgba(255, 255, 255, 0.95);
 }
-
 header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
 }
-
 .logo a {
     font-size: 1.5rem;
     font-weight: 700;
@@ -131,19 +117,16 @@ header .container {
     align-items: center;
     gap: 8px;
 }
-
 nav ul {
     display: flex;
     list-style: none;
     gap: 20px;
 }
-
 nav ul li a {
     font-weight: 500;
     position: relative;
     padding: 5px 0;
 }
-
 nav ul li a::after {
     content: '';
     position: absolute;
@@ -154,11 +137,9 @@ nav ul li a::after {
     background-color: var(--primary-color);
     transition: var(--transition);
 }
-
 nav ul li a:hover::after {
     width: 100%;
 }
-
 .order-btn {
     background-color: var(--primary-color);
     color: var(--white);
@@ -168,14 +149,11 @@ nav ul li a:hover::after {
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
 }
-
 .order-btn:hover {
-    background-color: #2aa8c6;
+    background-color: #0f6fe0;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
-
-/* Hero Sections */
 .hero, .about-hero, .workflow-hero, .join-hero, .order-hero {
     padding: 180px 0 100px;
     text-align: center;
@@ -183,7 +161,6 @@ nav ul li a:hover::after {
     position: relative;
     overflow: hidden;
 }
-
 .hero::before, .about-hero::before, .workflow-hero::before, .join-hero::before, .order-hero::before {
     content: '';
     position: absolute;
@@ -194,7 +171,6 @@ nav ul li a:hover::after {
     background: radial-gradient(circle, rgba(58, 192, 222, 0.05) 0%, transparent 70%);
     z-index: -1;
 }
-
 .hero h1, .about-hero h1, .workflow-hero h1, .join-hero h1, .order-hero h1 {
     font-size: 3rem;
     margin-bottom: 20px;
@@ -202,7 +178,6 @@ nav ul li a:hover::after {
     line-height: 1.2;
     font-weight: 700;
 }
-
 .hero p, .about-hero p, .workflow-hero p, .join-hero p, .order-hero p {
     font-size: 1.2rem;
     color: var(--light-text);
@@ -210,13 +185,10 @@ nav ul li a:hover::after {
     margin: 0 auto 30px;
     line-height: 1.8;
 }
-
-/* Features Section */
 .features {
     padding: 100px 0;
     text-align: center;
 }
-
 .features h2 {
     font-size: 2.5rem;
     margin-bottom: 50px;
@@ -224,7 +196,6 @@ nav ul li a:hover::after {
     position: relative;
     display: inline-block;
 }
-
 .features h2::after {
     content: '';
     position: absolute;
@@ -236,13 +207,11 @@ nav ul li a:hover::after {
     background: var(--primary-color);
     border-radius: 3px;
 }
-
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
 }
-
 .feature-item {
     background-color: var(--white);
     padding: 40px 30px;
@@ -251,13 +220,11 @@ nav ul li a:hover::after {
     transition: var(--transition);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
-
 .feature-item:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-lg);
     border-color: rgba(58, 192, 222, 0.2);
 }
-
 .feature-item i {
     font-size: 2.5rem;
     color: var(--primary-color);
@@ -267,19 +234,15 @@ nav ul li a:hover::after {
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
 .feature-item h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
     font-weight: 600;
 }
-
 .feature-item p {
     color: var(--light-text);
     line-height: 1.7;
 }
-
-/* Stats Section */
 .stats {
     padding: 80px 0;
     background-color: var(--primary-color);
@@ -288,7 +251,6 @@ nav ul li a:hover::after {
     position: relative;
     overflow: hidden;
 }
-
 .stats::before {
     content: '';
     position: absolute;
@@ -299,49 +261,40 @@ nav ul li a:hover::after {
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" opacity="0.05"><circle cx="50" cy="50" r="40" stroke="white" stroke-width="2"/></svg>');
     background-size: 100px 100px;
 }
-
 .stats .container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     position: relative;
 }
-
 .stat-item {
     padding: 30px;
     position: relative;
     z-index: 1;
 }
-
 .stat-item h3 {
     font-size: 3.5rem;
     margin-bottom: 10px;
     font-weight: 700;
 }
-
 .stat-item p {
     font-size: 1.1rem;
     opacity: 0.9;
 }
-
-/* Reviews Section */
 .reviews {
     padding: 100px 0;
     text-align: center;
 }
-
 .reviews h2 {
     font-size: 2.5rem;
     margin-bottom: 50px;
     color: var(--dark-bg);
 }
-
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
 }
-
 .review-item {
     background-color: var(--white);
     padding: 30px;
@@ -351,18 +304,15 @@ nav ul li a:hover::after {
     transition: var(--transition);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
-
 .review-item:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
 }
-
 .rating {
     color: #ffc107;
     margin-bottom: 15px;
     font-size: 1.2rem;
 }
-
 .review-text {
     font-style: italic;
     margin-bottom: 20px;
@@ -370,7 +320,6 @@ nav ul li a:hover::after {
     position: relative;
     padding-left: 20px;
 }
-
 .review-text::before {
     content: '"';
     position: absolute;
@@ -380,14 +329,12 @@ nav ul li a:hover::after {
     line-height: 1;
     color: rgba(0, 0, 0, 0.1);
 }
-
 .review-author {
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 .review-author::before {
     content: '';
     display: inline-block;
@@ -395,8 +342,6 @@ nav ul li a:hover::after {
     height: 2px;
     background-color: var(--primary-color);
 }
-
-/* CTA Section */
 .cta, .workflow-cta {
     padding: 100px 0;
     text-align: center;
@@ -405,7 +350,6 @@ nav ul li a:hover::after {
     position: relative;
     overflow: hidden;
 }
-
 .cta::before, .workflow-cta::before {
     content: '';
     position: absolute;
@@ -416,39 +360,31 @@ nav ul li a:hover::after {
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" opacity="0.05"><rect x="10" y="10" width="80" height="80" stroke="white" stroke-width="2"/></svg>');
     background-size: 100px 100px;
 }
-
 .cta .container, .workflow-cta .container {
     position: relative;
     z-index: 1;
 }
-
 .cta h2, .workflow-cta h2 {
     font-size: 2.5rem;
     margin-bottom: 20px;
 }
-
 .cta p, .workflow-cta p {
     max-width: 600px;
     margin: 0 auto 30px;
     font-size: 1.2rem;
     opacity: 0.9;
 }
-
-/* About Page */
 .about-content {
     padding: 100px 0;
 }
-
 .about-content .container {
     display: flex;
     align-items: center;
     gap: 60px;
 }
-
 .about-text {
     flex: 1;
 }
-
 .about-text h2 {
     font-size: 2.5rem;
     margin-bottom: 25px;
@@ -456,7 +392,6 @@ nav ul li a:hover::after {
     position: relative;
     display: inline-block;
 }
-
 .about-text h2::after {
     content: '';
     position: absolute;
@@ -467,25 +402,21 @@ nav ul li a:hover::after {
     background: var(--primary-color);
     border-radius: 3px;
 }
-
 .about-text p {
     margin-bottom: 20px;
     line-height: 1.8;
     color: var(--light-text);
 }
-
 .about-image {
     flex: 1;
     position: relative;
 }
-
 .about-image img {
     width: 100%;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
 }
-
 .about-image::before {
     content: '';
     position: absolute;
@@ -498,29 +429,24 @@ nav ul li a:hover::after {
     z-index: -1;
     transition: var(--transition);
 }
-
 .about-image:hover::before {
     top: -15px;
     left: -15px;
 }
-
 .team {
     padding: 100px 0;
     text-align: center;
 }
-
 .team h2 {
     font-size: 2.5rem;
     margin-bottom: 50px;
     color: var(--dark-bg);
 }
-
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
 }
-
 .team-member {
     background-color: var(--white);
     padding: 30px;
@@ -528,12 +454,10 @@ nav ul li a:hover::after {
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
 }
-
 .team-member:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-lg);
 }
-
 .team-member img {
     width: 150px;
     height: 150px;
@@ -543,27 +467,22 @@ nav ul li a:hover::after {
     border: 5px solid rgba(58, 192, 222, 0.1);
     transition: var(--transition);
 }
-
 .team-member:hover img {
     border-color: rgba(58, 192, 222, 0.3);
 }
-
 .team-member h3 {
     font-size: 1.4rem;
     margin-bottom: 5px;
 }
-
 .team-member p {
     color: var(--light-text);
     margin-bottom: 15px;
 }
-
 .social-links {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
-
 .social-links a {
     display: flex;
     align-items: center;
@@ -575,29 +494,24 @@ nav ul li a:hover::after {
     color: var(--primary-color);
     transition: var(--transition);
 }
-
 .social-links a:hover {
     background-color: var(--primary-color);
     color: var(--white);
 }
-
 .values {
     padding: 100px 0;
     text-align: center;
 }
-
 .values h2 {
     font-size: 2.5rem;
     margin-bottom: 50px;
     color: var(--dark-bg);
 }
-
 .values-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
-
 .value-item {
     background-color: var(--white);
     padding: 40px 30px;
@@ -605,12 +519,10 @@ nav ul li a:hover::after {
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
 }
-
 .value-item:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-lg);
 }
-
 .value-item i {
     font-size: 2.5rem;
     margin-bottom: 20px;
@@ -623,62 +535,45 @@ nav ul li a:hover::after {
     background-color: rgba(58, 192, 222, 0.1);
     color: var(--primary-color);
 }
-
 .value-item h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
     font-weight: 600;
 }
-
 .value-item p {
     color: var(--light-text);
     line-height: 1.7;
 }
-
-/* Workflow Page */
 .stages {
     padding: 100px 0;
 }
-
 .timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-    top: 0;
-    bottom: 0;
-    left: 30px;
-    margin-left: -2px;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 60px;
-}
-
-.timeline-number {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: var(--white);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    left: 0;
-    box-shadow: var(--shadow-sm);
-    border: 4px solid var(--background-color);
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
-
+.timeline-item {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+.timeline-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+.timeline-content {
+    flex-grow: 1;
+}
 .timeline-content {
     margin-left: 90px;
     padding: 30px;
@@ -688,12 +583,10 @@ nav ul li a:hover::after {
     transition: var(--transition);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
-
 .timeline-item:hover .timeline-content {
     transform: translateX(10px);
     box-shadow: var(--shadow-lg);
 }
-
 .timeline-content h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
@@ -701,7 +594,6 @@ nav ul li a:hover::after {
     position: relative;
     display: inline-block;
 }
-
 .timeline-content h3::after {
     content: '';
     position: absolute;
@@ -711,22 +603,17 @@ nav ul li a:hover::after {
     height: 2px;
     background-color: var(--primary-color);
 }
-
 .timeline-content p {
     color: var(--light-text);
     line-height: 1.8;
 }
-
-/* Forms */
 .join-form, .order-form {
     padding: 100px 0;
 }
-
 .join-form .container, .order-form .container {
     display: flex;
     gap: 60px;
 }
-
 .form-container {
     flex: 1;
     background-color: var(--white);
@@ -735,11 +622,9 @@ nav ul li a:hover::after {
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
 }
-
 .form-container:hover {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
-
 .form-container h2 {
     font-size: 2rem;
     margin-bottom: 30px;
@@ -747,7 +632,6 @@ nav ul li a:hover::after {
     position: relative;
     padding-bottom: 15px;
 }
-
 .form-container h2::after {
     content: '';
     position: absolute;
@@ -758,19 +642,16 @@ nav ul li a:hover::after {
     background-color: var(--primary-color);
     border-radius: 3px;
 }
-
 form p {
     margin-bottom: 25px;
     position: relative;
 }
-
 form label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
     color: var(--dark-bg);
 }
-
 form input, form textarea, form select {
     width: 100%;
     padding: 12px 15px;
@@ -779,34 +660,28 @@ form input, form textarea, form select {
     font-family: 'Inter', sans-serif;
     transition: var(--transition);
 }
-
 form input:focus, form textarea:focus, form select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(58, 192, 222, 0.2);
     outline: none;
 }
-
 form textarea {
     min-height: 150px;
     resize: vertical;
 }
-
 .join-info, .order-info {
     flex: 1;
     padding: 20px;
 }
-
 .join-info h3, .order-info h3 {
     font-size: 1.8rem;
     margin-bottom: 25px;
     color: var(--dark-bg);
 }
-
 .join-info ul, .order-info ol {
     margin-bottom: 30px;
     padding-left: 20px;
 }
-
 .join-info li, .order-info li {
     margin-bottom: 15px;
     line-height: 1.7;
@@ -814,7 +689,6 @@ form textarea {
     position: relative;
     padding-left: 25px;
 }
-
 .join-info li::before, .order-info li::before {
     content: '✓';
     position: absolute;
@@ -822,18 +696,15 @@ form textarea {
     color: var(--primary-color);
     font-weight: bold;
 }
-
 .contacts {
     margin-top: 40px;
 }
-
 .contacts p {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     color: var(--light-text);
 }
-
 .contacts i {
     margin-right: 15px;
     color: var(--primary-color);
@@ -841,12 +712,9 @@ form textarea {
     width: 20px;
     text-align: center;
 }
-
-/* Login & Register */
 .login-section, .register-section {
     padding: 150px 0 100px;
 }
-
 .login-form, .register-form {
     max-width: 500px;
     margin: 0 auto;
@@ -856,11 +724,9 @@ form textarea {
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
 }
-
 .login-form:hover, .register-form:hover {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
-
 .login-form h2, .register-form h2 {
     font-size: 2rem;
     margin-bottom: 30px;
@@ -868,7 +734,6 @@ form textarea {
     text-align: center;
     position: relative;
 }
-
 .login-form h2::after, .register-form h2::after {
     content: '';
     position: absolute;
@@ -880,17 +745,14 @@ form textarea {
     background-color: var(--primary-color);
     border-radius: 3px;
 }
-
 .form-group {
     margin-bottom: 25px;
 }
-
 .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
 }
-
 .form-group input {
     width: 100%;
     padding: 12px 15px;
@@ -899,30 +761,25 @@ form textarea {
     font-family: 'Inter', sans-serif;
     transition: var(--transition);
 }
-
 .form-group input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(58, 192, 222, 0.2);
     outline: none;
 }
-
 .error {
     color: #e74c3c;
     margin-top: 5px;
     font-size: 0.9rem;
 }
-
 .login-link, .register-link {
     margin-top: 25px;
     text-align: center;
 }
-
 .login-link a, .register-link a {
     color: var(--primary-color);
     font-weight: 600;
     position: relative;
 }
-
 .login-link a::after, .register-link a::after {
     content: '';
     position: absolute;
@@ -933,16 +790,12 @@ form textarea {
     background-color: var(--primary-color);
     transition: var(--transition);
 }
-
 .login-link a:hover::after, .register-link a:hover::after {
     width: 100%;
 }
-
-/* Applications */
 .applications-section {
     padding: 150px 0 80px;
 }
-
 .applications-section h1 {
     font-size: 2.5rem;
     margin-bottom: 30px;
@@ -950,7 +803,6 @@ form textarea {
     position: relative;
     display: inline-block;
 }
-
 .applications-section h1::after {
     content: '';
     position: absolute;
@@ -961,21 +813,18 @@ form textarea {
     background-color: var(--primary-color);
     border-radius: 3px;
 }
-
 .admin-notice {
     padding: 20px;
     border-left: 4px solid var(--primary-color);
     margin-bottom: 30px;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
-
 .applications-tabs {
     display: flex;
     margin-bottom: 30px;
     border-bottom: 1px solid #ddd;
     gap: 5px;
 }
-
 .tab-btn {
     padding: 12px 25px;
     background: none;
@@ -989,18 +838,15 @@ form textarea {
     transition: var(--transition);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
-
 .tab-btn:hover {
     color: var(--primary-color);
     background-color: rgba(58, 192, 222, 0.1);
 }
-
 .tab-btn.active {
     color: var(--primary-color);
     font-weight: 600;
     background-color: rgba(58, 192, 222, 0.1);
 }
-
 .tab-btn.active::after {
     content: '';
     position: absolute;
@@ -1010,22 +856,18 @@ form textarea {
     height: 2px;
     background-color: var(--primary-color);
 }
-
 .tab-content {
     display: none;
     animation: fadeIn 0.4s ease;
 }
-
 .tab-content.active {
     display: block;
 }
-
 .requests-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
 }
-
 .request-card {
     background-color: var(--white);
     padding: 25px;
@@ -1034,29 +876,24 @@ form textarea {
     transition: var(--transition);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
-
 .request-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
 }
-
 .request-card h3 {
     font-size: 1.3rem;
     margin-bottom: 15px;
     color: var(--dark-bg);
 }
-
 .request-card p {
     margin-bottom: 10px;
     display: flex;
 }
-
 .request-card p span:first-child {
     font-weight: 500;
     min-width: 120px;
     color: var(--dark-bg);
 }
-
 .status {
     display: inline-block;
     padding: 4px 10px;
@@ -1065,32 +902,25 @@ form textarea {
     font-weight: 500;
     margin-top: 10px;
 }
-
 .status-new, .status-pending {
     background-color: rgba(255, 193, 7, 0.1);
     color: #ffc107;
 }
-
 .status-in_progress {
     background-color: rgba(23, 162, 184, 0.1);
     color: #17a2b8;
 }
-
 .status-completed, .status-accepted {
     background-color: rgba(40, 167, 69, 0.1);
     color: #28a745;
 }
-
 .status-rejected {
     background-color: rgba(220, 53, 69, 0.1);
     color: #dc3545;
 }
-
-/* Request Detail */
 .request-detail {
     padding: 80px 0;
 }
-
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -1100,53 +930,44 @@ form textarea {
     font-weight: 500;
     transition: var(--transition);
 }
-
 .btn-back:hover {
     gap: 10px;
 }
-
 .request-card.detailed {
     max-width: 800px;
     margin: 0 auto;
     padding: 40px;
     box-shadow: var(--shadow-lg);
 }
-
 .info-row {
     display: flex;
     margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
-
 .info-row.full-width {
     display: block;
 }
-
 .info-label {
     font-weight: 600;
     width: 200px;
     color: var(--dark-bg);
 }
-
 .info-value {
     flex: 1;
     color: var(--light-text);
 }
-
 .admin-actions {
     margin-top: 40px;
     padding-top: 30px;
     border-top: 2px solid #eee;
 }
-
 .status-form {
     display: flex;
     gap: 15px;
     margin-top: 20px;
     align-items: center;
 }
-
 .status-select {
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -1155,15 +976,12 @@ form textarea {
     flex: 1;
     max-width: 300px;
 }
-
-/* Footer */
 footer {
     background-color: var(--dark-bg);
     color: var(--white);
     padding: 80px 0 0;
     position: relative;
 }
-
 footer::before {
     content: '';
     position: absolute;
@@ -1174,7 +992,6 @@ footer::before {
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" opacity="0.05"><path d="M0,0 L100,100 M100,0 L0,100" stroke="white" stroke-width="2"/></svg>');
     background-size: 100px 100px;
 }
-
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1182,18 +999,15 @@ footer::before {
     position: relative;
     z-index: 1;
 }
-
 .footer-section {
     margin-bottom: 40px;
 }
-
 .footer-section h3 {
     font-size: 1.4rem;
     margin-bottom: 25px;
     position: relative;
     display: inline-block;
 }
-
 .footer-section h3::after {
     content: '';
     position: absolute;
@@ -1203,35 +1017,29 @@ footer::before {
     height: 3px;
     background-color: var(--primary-color);
 }
-
 .footer-section p {
     margin-bottom: 15px;
     line-height: 1.7;
     opacity: 0.8;
 }
-
 .footer-links li {
     margin-bottom: 12px;
 }
-
 .footer-links a {
     opacity: 0.8;
     transition: var(--transition);
     display: inline-block;
 }
-
 .footer-links a:hover {
     opacity: 1;
     color: var(--primary-color);
     transform: translateX(5px);
 }
-
 .social-links {
     display: flex;
     gap: 15px;
     margin-top: 20px;
 }
-
 .social-links a {
     display: inline-flex;
     align-items: center;
@@ -1243,12 +1051,10 @@ footer::before {
     transition: var(--transition);
     font-size: 1.2rem;
 }
-
 .social-links a:hover {
     background-color: var(--primary-color);
     transform: translateY(-5px);
 }
-
 .copyright {
     text-align: center;
     padding: 30px 0;
@@ -1259,114 +1065,89 @@ footer::before {
     position: relative;
     z-index: 1;
 }
-
-/* Animations */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-/* Responsive */
 @media (max-width: 992px) {
     .about-content .container, .join-form .container, .order-form .container {
         flex-direction: column;
     }
-
     .about-image {
         order: -1;
         margin-bottom: 40px;
     }
-
     .form-container {
         width: 100%;
     }
 }
-
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;
         padding: 15px;
     }
-
     nav ul {
         margin: 20px 0;
         flex-wrap: wrap;
         justify-content: center;
     }
-
     nav ul li {
         margin: 0 10px;
     }
-
     .order-btn {
         margin-top: 15px;
     }
-
     .hero, .about-hero, .workflow-hero, .join-hero, .order-hero {
         padding: 150px 0 60px;
     }
-
     .hero h1, .about-hero h1, .workflow-hero h1, .join-hero h1, .order-hero h1 {
         font-size: 2.2rem;
     }
-
     .timeline::before {
         left: 15px;
     }
-
     .timeline-number {
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
     }
-
     .timeline-content {
         margin-left: 60px;
     }
-
     .footer-content {
         grid-template-columns: 1fr 1fr;
     }
 }
-
 @media (max-width: 576px) {
     .features-grid, .team-grid, .values-grid, .reviews-grid, .requests-grid {
         grid-template-columns: 1fr;
     }
-
     .footer-content {
         grid-template-columns: 1fr;
     }
-
     .applications-tabs {
         flex-wrap: wrap;
     }
-
     .tab-btn {
         flex: 1;
         min-width: 120px;
         padding: 10px 15px;
         font-size: 0.9rem;
     }
-
     .info-row {
         flex-direction: column;
         gap: 5px;
     }
-
     .info-label {
         width: 100%;
     }
 }
-
-
 .notification-wrapper {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1000;
 }
-
 .notification {
   padding: 15px;
   margin-bottom: 10px;
@@ -1375,15 +1156,12 @@ footer::before {
   position: relative;
   animation: slideIn 0.5s forwards;
 }
-
 .notification.success {
   background-color: #4CAF50;
 }
-
 .notification.error {
   background-color: #F44336;
 }
-
 .close-btn {
   position: absolute;
   top: 5px;
@@ -1391,32 +1169,26 @@ footer::before {
   cursor: pointer;
   font-size: 18px;
 }
-
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
-
-
 .admin-actions {
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid #eee;
 }
-
 .status-form {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
-
 .status-select {
     padding: 0.5rem;
     border-radius: 4px;
     border: 1px solid #ddd;
     min-width: 200px;
 }
-
 .btn-danger {
     background-color: #dc3545;
     color: white;
@@ -1425,11 +1197,9 @@ footer::before {
     border-radius: 4px;
     cursor: pointer;
 }
-
 .btn-danger:hover {
     background-color: #c82333;
 }
-
 .messages {
     position: fixed;
     top: 20px;
@@ -1437,7 +1207,6 @@ footer::before {
     z-index: 1000;
     min-width: 300px;
 }
-
 .alert {
     padding: 15px;
     margin-bottom: 10px;
@@ -1446,15 +1215,12 @@ footer::before {
     position: relative;
     animation: slideIn 0.5s forwards;
 }
-
 .alert-success {
     background-color: #4CAF50;
 }
-
 .alert-error {
     background-color: #f44336;
 }
-
 .close {
     color: white;
     border: transparent;
@@ -1465,44 +1231,149 @@ footer::before {
     cursor: pointer;
     font-size: 14px;
 }
-
 @keyframes slideIn {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
-
 .feature-item {
     position: relative;
 }
-
 .admin-actions {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
     display: flex;
-    gap: 5px;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: static;
 }
-
 .btn-edit, .btn-delete {
     padding: 3px 8px;
     font-size: 14px;
     border: none;
     cursor: pointer;
-    background: rgba(255,255,255,0.9);
+    background-color: var(--primary-color);
     border-radius: 3px;
 }
-
 .btn-delete {
     color: #dc3545;
 }
-
 .btn-delete:hover {
     background: #dc3545;
     color: white;
 }
-
 .admin-panel {
     margin-top: 30px;
     text-align: center;
 }
 
+
+/* === Adaptive Fixes @max-width: 768px === */
+@media (max-width: 768px) {
+  .timeline {
+    padding: 0 15px;
+  }
+  .timeline-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .timeline-number {
+    font-size: 1.2rem;
+  }
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .info-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .form-container {
+    width: 100%;
+  }
+  .status-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .admin-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 20px;
+  }
+  .features-grid,
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* === Fix oversized header on small screens === */
+@media (max-width: 768px) {
+  header .container {
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+  header .logo a {
+    font-size: 1.2rem;
+  }
+  nav ul {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .hero, .about-hero, .workflow-hero, .join-hero, .order-hero {
+    padding-top: 120px;
+  }
+}
+
+
+
+/* === Mobile Navigation with Toggle === */
+.menu-toggle {
+  display: none;
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    box-shadow: var(--shadow-md);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    z-index: 1000;
+  }
+
+  body.menu-open nav ul {
+    display: flex;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+  }
+
+  .hero, .about-hero, .workflow-hero, .join-hero, .order-hero {
+    padding-top: 120px;
+  }
+}
