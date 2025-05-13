@@ -12,18 +12,19 @@
 <section class="features">
     <div class="container">
         <h2>Наши преимущества</h2>
+        {% if user.is_superuser %}
+        <button class="btn btn-primary" onclick="openAddModal()">➕ Добавить фичу</button>
+        {% endif %}
         <div class="features-grid">
             {% for feature in features %}
-            <div class="feature-item" data-id="{{ feature.id }}">
+            <div class="feature-item">
                 <i class="fas {{ feature.icon }}"></i>
                 <h3>{{ feature.title }}</h3>
                 <p>{{ feature.description }}</p>
-
                 {% if user.is_superuser %}
                 <div class="admin-actions">
                     <button class="btn btn-edit" onclick="openEditModal({{ feature.id }}, '{{ feature.title|escapejs }}', '{{ feature.description|escapejs }}', '{{ feature.icon|escapejs }}')">✏️</button>
-
-                    <form method="post" action="{% url 'delete_feature' feature.id %}" style="display:inline">
+                    <form action="{% url 'delete_feature' feature.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-delete">🗑️</button>
                     </form>
@@ -32,12 +33,6 @@
             </div>
             {% endfor %}
         </div>
-
-        {% if user.is_superuser %}
-        <div class="admin-panel">
-            <button class="btn btn-success" onclick="openAddModal()">➕ Добавить новый блок</button>
-        </div>
-        {% endif %}
     </div>
 </section>
 
@@ -114,7 +109,16 @@
                 </div>
             </p>
             <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
+
+<div class="form-group">
+    <label for="order">Порядок отображения:</label>
+    <select name="order" class="form-control" id="editOrderSelect" name="order">
+        {% for i in total_range %}
+            <option value="{{ i }}" {% if feature.order == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
+</div>
+</form>
     </div>
 </div>
 
@@ -149,34 +153,44 @@
 
 {% block scripts %}
 <script>
-function openEditModal(id, title, description, icon) {
-    document.getElementById('edit-id').value = id;
+function openEditModal(id, title, description, icon, order) {
+    document.getElementById('editFeatureModal').style.display = 'flex';
     document.getElementById('edit-title').value = title;
     document.getElementById('edit-description').value = description;
     document.getElementById('edit-icon').value = icon;
-    document.getElementById('editFeatureForm').action = `/feature/edit/${id}/`;
-    document.getElementById('editFeatureModal').style.display = 'block';
-}
-function closeEditModal() {
-    document.getElementById('editFeatureModal').style.display = 'none';
+    document.getElementById('editOrderSelect').value = order;
+    document.getElementById('editFeatureForm').action = `/feature/${id}/edit/`;
+
+    document.querySelectorAll('#editFeatureModal .icon-option').forEach(el => {
+        el.classList.remove('selected');
+        if (el.querySelector('i').classList.contains(icon)) {
+            el.classList.add('selected');
+        }
+    });
 }
 function openAddModal() {
-    document.getElementById('addFeatureModal').style.display = 'block';
-}
-function closeAddModal() {
-    document.getElementById('addFeatureModal').style.display = 'none';
-}
-function selectIcon(inputId, icon) {
-    document.getElementById(inputId).value = icon;
-    // Визуальное подтверждение выбора иконки
-    document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
-    event.target.closest('.icon-option').classList.add('selected');
+    document.getElementById('addFeatureModal').style.display = 'flex';
+    document.getElementById('add-title').value = '';
+    document.getElementById('add-description').value = '';
+    document.getElementById('add-icon').value = 'fa-lightbulb'; // Значение по умолчанию
+    document.getElementById('addOrderSelect').selectedIndex = 0;
+    document.getElementById('addFeatureForm').action = '/feature/add/';
+
+    // Сброс и выбор иконки по умолчанию
+    document.querySelectorAll('#addFeatureModal .icon-option').forEach(el => {
+        el.classList.remove('selected');
+        if (el.querySelector('i').classList.contains('fa-lightbulb')) {
+            el.classList.add('selected');
+        }
+    });
 }
 
-window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-    }
+
+function selectIcon(inputId, icon, event) {
+    document.getElementById(inputId).value = icon;
+    const scope = inputId === 'edit-icon' ? '#editFeatureModal' : '#addFeatureModal';
+    document.querySelectorAll(`${scope} .icon-option`).forEach(el => el.classList.remove('selected'));
+    event.target.closest('.icon-option').classList.add('selected');
 }
 </script>
 <style>
@@ -220,3 +234,160 @@ window.onclick = function(event) {
 }
 </style>
 {% endblock %}
+
+<!-- Add Modal -->
+<div id="addFeatureModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModal()">&times;</span>
+        <h2>Добавить фичу</h2>
+        <form action="{% url 'add_feature' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Заголовок" required>
+            <textarea name="description" placeholder="Описание" required></textarea>
+            <input type="hidden" name="icon" id="add-icon" value="fa-star">
+            <div class="icon-list">
+                {% for icon in icons %}
+                <span class="icon-option" onclick="selectIcon('add-icon', '{{ icon }}', event)">
+                    <i class="fas {{ icon }}"></i>
+                </span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editFeatureModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Редактировать фичу</h2>
+        <form id="editFeatureForm" method="post">
+            {% csrf_token %}
+            <input type="text" name="title" id="edit-title" placeholder="Заголовок" required>
+            <textarea name="description" id="edit-description" placeholder="Описание" required></textarea>
+            <input type="hidden" name="icon" id="edit-icon">
+            <div class="icon-list">
+                {% for icon in icons %}
+                <span class="icon-option" onclick="selectIcon('edit-icon', '{{ icon }}', event)">
+                    <i class="fas {{ icon }}"></i>
+                </span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+
+<div class="form-group">
+    <label for="order">Порядок отображения:</label>
+    <select name="order" class="form-control" id="editOrderSelect" name="order">
+        {% for i in total_range %}
+            <option value="{{ i }}" {% if feature.order == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
+</div>
+</form>
+    </div>
+</div>
+
+<style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close {
+    position: absolute; top: 10px; right: 15px;
+    cursor: pointer; font-size: 24px;
+}
+.icon-list {
+    display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0;
+}
+.icon-option {
+    padding: 10px; border: 1px solid #ddd; border-radius: 5px;
+    cursor: pointer;
+}
+.icon-option.selected {
+    background-color: var(--primary-color);
+    color: white;
+}
+</style>
+
+<script>
+function openEditModal(id, title, description, icon, order) {
+    document.getElementById('editFeatureModal').style.display = 'flex';
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-description').value = description;
+    document.getElementById('edit-icon').value = icon;
+    document.getElementById('editOrderSelect').value = order;
+    document.getElementById('editFeatureForm').action = `/feature/${id}/edit/`;
+
+    document.querySelectorAll('#editFeatureModal .icon-option').forEach(el => {
+        el.classList.remove('selected');
+        if (el.querySelector('i').classList.contains(icon)) {
+            el.classList.add('selected');
+        }
+    });
+}
+
+function selectIcon(inputId, icon, event) {
+    document.getElementById(inputId).value = icon;
+    const scope = inputId === 'edit-icon' ? '#editFeatureModal' : '#addFeatureModal';
+    document.querySelectorAll(`${scope} .icon-option`).forEach(el => el.classList.remove('selected'));
+    event.target.closest('.icon-option').classList.add('selected');
+}
+</script>
+
+<script>
+function openAddModal() {
+    document.getElementById('addFeatureModal').style.display = 'flex';
+}
+function closeAddModal() {
+    document.getElementById('addFeatureModal').style.display = 'none';
+}
+function closeEditModal() {
+    document.getElementById('editFeatureModal').style.display = 'none';
+}
+    // Универсальный обработчик для выбора иконки
+    document.querySelectorAll('.icon-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const parent = this.closest('.icon-selection');
+            const iconInput = parent.querySelector('input[type="hidden"]');
+            const iconClass = this.querySelector('i').classList[1]; // fa-*
+
+            // Сброс всех .selected в этом блоке
+            parent.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+
+            // Выделяем выбранную
+            this.classList.add('selected');
+
+            // Обновляем скрытое поле
+            if (iconInput) {
+                iconInput.value = iconClass;
+            }
+        });
+    });
+  // Закрытие модалки по клику вне блока .modal-content
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>

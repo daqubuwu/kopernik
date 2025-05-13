@@ -15,16 +15,25 @@ from django.db import models
 
 def home(request):
     company_info = CompanyInfo.objects.first()
-    icons = "fa-star fa-bolt fa-heart fa-code fa-magic fa-lightbulb fa-chart-line fa-cogs fa-lock fa-globe".split()
+    features = Feature.objects.filter(is_active=True).order_by('order')
+    total_range = range(1, features.count() + 5)
+    if not request.user.is_superuser:
+        features = features[:4]
+
+    available_icons = [
+        'fa-star', 'fa-bolt', 'fa-heart', 'fa-code', 'fa-magic',
+        'fa-lightbulb', 'fa-chart-line', 'fa-cogs', 'fa-lock', 'fa-globe'
+    ]
+
     context = {
         'company_info': company_info,
         'reviews': Review.objects.filter(is_published=True)[:3],
-        'features': Feature.objects.filter(is_active=True).order_by('order'),
-        'icons': icons,  # Передаем список иконок в контекст
+        'features': features,
+        'icons': available_icons,
+        'total_range': total_range,
     }
-    if not request.user.is_superuser:
-        context['features'] = context['features'][:4]
     return render(request, 'design_studio/home.html', context)
+
 
 
 def about(request):
@@ -251,31 +260,50 @@ def delete_request(request, pk):
     return redirect('applications')
 
 
+@login_required
 @require_POST
 def add_feature(request):
     title = request.POST.get('title')
     description = request.POST.get('description')
-    if title and description:
-        order = Feature.objects.count() + 1
-        Feature.objects.create(title=title, description=description, order=order, is_active=True)
-        return redirect('home')
+    icon = request.POST.get('icon')
+    order = int(request.POST.get('order', 0))
+
+    if order < 1:
+        order = 1
+
+    Feature.objects.filter(order__gte=order).update(order=models.F('order') + 1)
+    Feature.objects.create(title=title, description=description, icon=icon, order=order)
+    messages.success(request, 'Фича успешно добавлена!')
     return redirect('home')
 
 
+@login_required
 @require_POST
 def update_feature(request, pk):
     feature = get_object_or_404(Feature, pk=pk)
-    if request.method == 'POST':
-        feature.title = request.POST.get('title')
-        feature.description = request.POST.get('description')
-        feature.icon = request.POST.get('icon')
-        feature.save()
+    feature.title = request.POST.get('title', feature.title)
+    feature.description = request.POST.get('description', feature.description)
+    icon = request.POST.get('icon')
+    if icon:
+        feature.icon = icon
+
+    new_order = int(request.POST.get('order', feature.order))
+    if new_order != feature.order:
+        if new_order < feature.order:
+            Feature.objects.filter(order__gte=new_order, order__lt=feature.order).update(order=models.F('order') + 1)
+        else:
+            Feature.objects.filter(order__gt=feature.order, order__lte=new_order).update(order=models.F('order') - 1)
+        feature.order = new_order
+
+    feature.save()
+    messages.success(request, 'Фича обновлена успешно!')
+    return redirect('home')
 
 
 
 
-@require_POST
+@login_required
 def delete_feature(request, pk):
     feature = get_object_or_404(Feature, pk=pk)
     feature.delete()
-    return redirect('home')  # Перенаправление на главную страницу
+    return redirect('home')

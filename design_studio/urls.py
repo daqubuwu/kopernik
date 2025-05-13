@@ -23,6 +23,7 @@ urlpatterns = [
     path('feature/add/', add_feature, name='add_feature'),
     path('feature/<int:pk>/edit/', update_feature, name='update_feature'),
 
+
     path('feature/<int:pk>/delete/', delete_feature, name='delete_feature'),
 
 

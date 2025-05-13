@@ -94,3 +94,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, 5000);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Открытие модалки "Добавить фичу"
+    const openAddBtn = document.getElementById('openAddFeatureModal');
+    const addModal = document.getElementById('addFeatureModal');
+    if (openAddBtn && addModal) {
+        openAddBtn.addEventListener('click', () => {
+            addModal.style.display = 'flex';
+        });
+    }
+
+    // Выбор иконки — для добавления
+    document.querySelectorAll('#addFeatureModal .icon-option').forEach(el => {
+        el.addEventListener('click', () => {
+            document.querySelectorAll('#addFeatureModal .icon-option').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            const iconClass = el.querySelector('i').classList[1];
+            document.getElementById('add-icon').value = iconClass;
+        });
+    });
+
+    // Выбор иконки — для редактирования
+    document.querySelectorAll('#editFeatureModal .icon-option').forEach(el => {
+        el.addEventListener('click', () => {
+            document.querySelectorAll('#editFeatureModal .icon-option').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            const iconClass = el.querySelector('i').classList[1];
+            document.getElementById('edit-icon').value = iconClass;
+        });
+    });
+
+    // Закрытие модалки кликом вне контента
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+});
+
