@@ -1,4 +1,6 @@
 import os
+from decouple import config
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -85,10 +87,11 @@ LOGOUT_REDIRECT_URL = 'home'  # Куда перенаправлять после
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465  # Для SSL
+EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'daqubeen@yandex.ru'
-EMAIL_HOST_PASSWORD = 'mdnocnnphfedgtes'
-DEFAULT_FROM_EMAIL = 'daqubeen@yandex.ru'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

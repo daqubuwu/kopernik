@@ -16,10 +16,12 @@ from django.db import models
 def home(request):
     company_info = CompanyInfo.objects.first()
     features = Feature.objects.filter(is_active=True).order_by('order')
-    total_range = range(1, features.count() + 5)
+
+    # Ограничение количества фич для обычных пользователей
     if not request.user.is_superuser:
         features = features[:4]
 
+    # Список иконок для выбора в модальном окне
     available_icons = [
         'fa-star', 'fa-bolt', 'fa-heart', 'fa-code', 'fa-magic',
         'fa-lightbulb', 'fa-chart-line', 'fa-cogs', 'fa-lock', 'fa-globe'
@@ -29,9 +31,9 @@ def home(request):
         'company_info': company_info,
         'reviews': Review.objects.filter(is_published=True)[:3],
         'features': features,
-        'icons': available_icons,
-        'total_range': total_range,
+        'icons': available_icons
     }
+
     return render(request, 'design_studio/home.html', context)
 
 
@@ -107,13 +109,38 @@ def join(request):
             if request.user.is_authenticated:
                 application.user = request.user
             if not request.user.is_superuser:
-                application.status = 'new'
+                application.status = 'pending'
             application.save()
+
+            # 🔔 Отправка письма админу
+            email_message = f"""
+📌 Новая заявка от дизайнера
+
+👤 Имя: {application.name}
+📧 Email: {application.email}
+📞 Телефон: {application.phone}
+
+💼 Специализация: {application.specialization}
+🧠 Опыт: {application.experience}
+🔗 Портфолио: {application.portfolio_link}
+"""
+            try:
+                send_mail(
+                    subject='Новая заявка от дизайнера',
+                    message=email_message.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=['daqubeen@yandex.ru'],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                messages.error(request, f'Ошибка при отправке уведомления: {str(e)}')
+
             messages.success(request, 'Ваша заявка успешно отправлена!')
             return redirect('applications')
     else:
         form = DesignerApplicationForm(user=request.user)
     return render(request, 'design_studio/join.html', {'form': form})
+
 
 
 def order(request):
@@ -216,6 +243,7 @@ def request_detail(request, request_id):
     client_request = get_object_or_404(ClientRequest, id=request_id)
     if not request.user.is_superuser and client_request.user != request.user:
         return redirect('applications')
+
     if request.method == 'POST' and request.user.is_superuser:
         action = request.POST.get('action')
         if action == 'update_status':
@@ -223,32 +251,81 @@ def request_detail(request, request_id):
             if new_status in dict(ClientRequest.STATUS_CHOICES).keys():
                 client_request.status = new_status
                 client_request.save()
-                messages.success(request, 'Статус заявки обновлен')
+
+                # Отправка email с уведомлением клиенту
+                status_messages = {
+                    'new': 'Ваша заявка принята в обработку.',
+                    'in_progress': 'Ваша заявка сейчас в работе.',
+                    'completed': 'Ваша заявка успешно выполнена.',
+                    'rejected': 'К сожалению, ваша заявка была отклонена.'
+                }
+
+                message_body = status_messages.get(new_status, 'Статус вашей заявки обновлён.')
+
+                try:
+                    send_mail(
+                        subject='Обновление статуса вашей заявки',
+                        message=message_body,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[client_request.email],
+                        fail_silently=False,
+                    )
+                    messages.success(request, f'Статус заявки обновлен и уведомление отправлено на {client_request.email}')
+                except Exception as e:
+                    messages.warning(request, f'Статус обновлен, но не удалось отправить email: {str(e)}')
+
         elif action == 'delete':
             client_request.delete()
             messages.success(request, 'Заявка успешно удалена')
             return redirect('applications')
+
     return render(request, 'design_studio/request_detail.html', {'request': client_request})
+
 
 
 @login_required
 def designer_application_detail(request, pk):
     application = get_object_or_404(DesignerApplication, pk=pk)
+
     if not request.user.is_superuser and application.user != request.user:
         return redirect('applications')
+
     if request.method == 'POST' and request.user.is_superuser:
         action = request.POST.get('action')
+
         if action == 'update_status':
             new_status = request.POST.get('status')
             if new_status in dict(application.STATUS_CHOICES).keys():
                 application.status = new_status
                 application.save()
-                messages.success(request, 'Статус заявки обновлен')
+
+                # ✉️ Автоматическое письмо дизайнеру
+                status_messages = {
+                    'pending': 'Ваша заявка находится на рассмотрении.',
+                    'accepted': 'Поздравляем! Ваша заявка принята.',
+                    'rejected': 'К сожалению, ваша заявка была отклонена.'
+                }
+                message = status_messages.get(new_status, 'Статус вашей заявки обновлён.')
+
+                try:
+                    send_mail(
+                        subject='Обновление статуса вашей заявки',
+                        message=message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[application.email],
+                        fail_silently=False
+                    )
+                except Exception as e:
+                    messages.error(request, f'Ошибка при отправке уведомления: {str(e)}')
+
+                messages.success(request, 'Статус заявки обновлён')
         elif action == 'delete':
             application.delete()
             messages.success(request, 'Заявка успешно удалена')
             return redirect('applications')
+
     return render(request, 'design_studio/designer_application_detail.html', {'application': application})
+
 
 
 @login_required
