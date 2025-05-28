@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49c8b5e3-20b9-499e-8f4d-c076c64d51d0" name="Changes" comment="status_update">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kopernik.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kopernik.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/design_studio/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/design_studio/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/design_studio/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/design_studio/about.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/design_studio/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/design_studio/base.html" afterDir="false" />
-    </list>
+    <list default="true" id="49c8b5e3-20b9-499e-8f4d-c076c64d51d0" name="Changes" comment="avatarsBtnstyles" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -183,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747108030720</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="avatarsBtnstyles">
+      <option name="closed" value="true" />
+      <created>1748459402199</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748459402199</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +204,7 @@
     <MESSAGE value="littlechanges" />
     <MESSAGE value="uiuxend" />
     <MESSAGE value="status_update" />
-    <option name="LAST_COMMIT_MESSAGE" value="status_update" />
+    <MESSAGE value="avatarsBtnstyles" />
+    <option name="LAST_COMMIT_MESSAGE" value="avatarsBtnstyles" />
   </component>
 </project>
