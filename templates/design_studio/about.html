@@ -1,4 +1,5 @@
 {% extends 'design_studio/base.html' %}
+{% load static %}
 
 {% block content %}
 <section class="about-hero">
@@ -23,22 +24,22 @@
         <h2>Наша команда</h2>
         <div class="team-grid">
             <div class="team-member">
-                <img src="https://via.placeholder.com/200x200" alt="Член команды">
+                <img src="{% static 'image/woman1.png' %}" alt="описание" />
                 <h3>Анна Иванова</h3>
                 <p>Арт-директор</p>
             </div>
             <div class="team-member">
-                <img src="https://via.placeholder.com/200x200" alt="Член команды">
+                <img src="{% static 'image/man1.png' %}" alt="описание" />
                 <h3>Петр Сидоров</h3>
                 <p>UI/UX дизайнер</p>
             </div>
             <div class="team-member">
-                <img src="https://via.placeholder.com/200x200" alt="Член команды">
+                <img src="{% static 'image/woman2.png' %}" alt="описание" />
                 <h3>Мария Петрова</h3>
                 <p>Графический дизайнер</p>
             </div>
             <div class="team-member">
-                <img src="https://via.placeholder.com/200x200" alt="Член команды">
+                <img src="{% static 'image/man2.png' %}" alt="описание" />
                 <h3>Иван Кузнецов</h3>
                 <p>Веб-дизайнер</p>
             </div>
