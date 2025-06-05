@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49c8b5e3-20b9-499e-8f4d-c076c64d51d0" name="Changes" comment="avatars">
+    <list default="true" id="49c8b5e3-20b9-499e-8f4d-c076c64d51d0" name="Changes" comment="render deploy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kopernik/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kopernik/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -196,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748460101169</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="render deploy">
+      <option name="closed" value="true" />
+      <created>1749100675166</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749100675166</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,6 +226,7 @@
     <MESSAGE value="status_update" />
     <MESSAGE value="avatarsBtnstyles" />
     <MESSAGE value="avatars" />
-    <option name="LAST_COMMIT_MESSAGE" value="avatars" />
+    <MESSAGE value="render deploy" />
+    <option name="LAST_COMMIT_MESSAGE" value="render deploy" />
   </component>
 </project>
